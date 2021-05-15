@@ -2,7 +2,7 @@ In order to build a quick and simple UI, some Vaadin libraries have been used.
 However, the app is a pure SpringBoot application.
 
 Persistence layer
-Persistence is based on the H2 database and Spring Data JPA. The application creates a H2 datafile in ~/people/
+Persistence is based on the H2 database and Spring Data JPA (the persistence layer can be changed just providing different implementations of the repositories). The application creates a H2 datafile in ~/people/
 
 CSV implementation
 The CSV format is managed with Apache Commons CSV. The CSV supported format is defined in RFC 4180 (commas as separators).
