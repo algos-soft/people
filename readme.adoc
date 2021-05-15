@@ -1,28 +1,36 @@
-In order to build a quick and simple UI I used some Vaadin libraries.
+In order to build a quick and simple UI, some Vaadin libraries have been used.
 However, the app is a pure SpringBoot application.
 
+Persistence layer
 Persistence is based on the H2 database and Spring Data JPA. The application creates a H2 datafile in ~/people/
 
-Highlighting complexities you have to cover:
+CSV implementation
+The CSV format is managed with Apache Commons CSV. The CSV supported format is defined in RFC 4180 (commas as separators).
 
+Email field uniqueness
 Due to the uniqueness constraint on the email field, a unique index has been added at persistence level.
 Person.class -> @Table(indexes = @Index(columnList = "email"))
 Persistence exceptions are intercepted at Business level and Presentation level in order to manage the error condition appropriately at each level.
 
 Date format problem
-The guidelines didn't specify the format for the date field, so I used a brute force parser found in the Open Source in order to support different possible formats.
+The guidelines didn't specify the format for the date field, so a brute force parser has been used in order to support different possible formats.
 A more efficient solution could be used if some specs on the date format were provided.
 
-Data type problem
+File type problem
 "Given a new file to import, when I upload a *.txt file, then I should receive an error" - this requirement was a bit misleading.
 The data submitted to an endpoint does not necessarily have a filename: in case of a web application data is submitted through http streams.
 So it is impossible to tell if it came from a *.txt or *.csv or any other type of file stored in the client, unless the client does not declare it explicitly in the Content-Type request headers.
 The best that i could do is to check the MIME type of the input stream through Apache Tika - so you can at least detect if it is "plain/text" and reject other types.
 But you can tell if the data logically complies with the expected .csv structure only when you actually parse the content.
 
-Generator
-In order to test the endpoint, I needed some .csv files with random people and different sizes, so I implemented a small service based on randomuser.me to generate them.
-Eventually you can access the service at the url http://localhost:8080/generator
+Handling of invalid data
+In case of malformed csv or missing email, the whole import operation is interrupted. Other strategies which could be implemented may include rolling back the transaction or skipping the invalid entries.
 
+Generator
+In order to test the endpoint, I needed some .csv files with random people and different sizes, so a small service based on randomuser.me has been implemented to generate them.
+You can access the generator service at the url http://localhost:8080/generator
+
+Test data
+In the testfiles directory there are some data files for testing. The 10.000 rows datafile does not produce 10.000 rows in the db because some email addresses are duplicated.
 
 
