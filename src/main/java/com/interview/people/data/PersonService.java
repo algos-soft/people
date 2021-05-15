@@ -1,21 +1,46 @@
 package com.interview.people.data;
 
 import com.interview.people.OffsetBasedPageRequest;
+import net.balusc.util.DateUtil;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+import org.apache.tika.Tika;
+import org.apache.tika.exception.TikaException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.xml.sax.SAXException;
 
+import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URLConnection;
+import java.text.ParseException;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class PersonService {
 
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     private PersonRepository repository;
 
+    private Tika tika;
+
+    @PostConstruct
+    private void init(){
+        tika=new Tika();
+    }
 
     public void test() {
         Person person = new Person();
@@ -45,5 +70,53 @@ public class PersonService {
     public void deleteAll() {
         repository.deleteAll();
     }
+
+    public void importCsv(InputStream inputStream) throws Exception {
+
+        // check text/plain MIME type
+        String mimeType=tika.detect(inputStream);
+        if(!mimeType.equals("text/plain")){
+            Exception e = new Exception("Uploaded content type is not text/plain");
+            log.error("could not import CSV", e);
+            throw e;
+        }
+
+        Reader targetReader = new InputStreamReader(inputStream);
+        CSVParser csvParser = new CSVParser(targetReader, CSVFormat.DEFAULT);
+
+        Person person;
+        for(CSVRecord csvRecord : csvParser){
+            person=new Person();
+            person.setEmail(csvRecord.get(0));
+            person.setLastname(csvRecord.get(1));
+            person.setFirstname(csvRecord.get(2));
+            person.setFiscalCode(csvRecord.get(3));
+            person.setDescription(csvRecord.get(4));
+            person.setLastAccessDate(parseDate(csvRecord.get(5)));
+
+            int a = 87;
+            int b=a;
+
+        }
+
+
+
+    }
+
+
+    private LocalDate parseDate(String dateString) throws ParseException {
+        Date date = DateUtil.parse(dateString);
+        return new java.sql.Date(date.getTime()).toLocalDate();
+    }
+
+
+
+    private String parseToStringExample(InputStream inputStream) throws IOException, SAXException, TikaException {
+        Tika tika = new Tika();
+        String type=tika.detect(inputStream);
+        return type;
+    }
+
+
 
 }

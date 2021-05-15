@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(indexes = @Index(name = "uniqueEmail", columnList = "email", unique = true))
+@Table(indexes = @Index(name = "email", columnList = "email", unique = true))
 public class Person {
 
     @Id
@@ -71,5 +71,18 @@ public class Person {
 
     public void setLastAccessDate(LocalDate lastAccessDate) {
         this.lastAccessDate = lastAccessDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", fiscalCode='" + fiscalCode + '\'' +
+                ", description='" + description + '\'' +
+                ", lastAccessDate=" + lastAccessDate +
+                '}';
     }
 }
