@@ -1,21 +1,21 @@
 package com.interview.people.data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
+@Table(indexes = @Index(name = "uniqueEmail", columnList = "email", unique = true))
 public class Person {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String email;
     private String lastname;
     private String firstname;
     private String fiscalCode;
     private String description;
-    private String lastAccessDate;  // using String instead of LocalDate to avoid automatic timezone conversion issues introduced by jdbc drivers
+    private LocalDate lastAccessDate;
 
     public Integer getId() {
         return id;
@@ -65,11 +65,11 @@ public class Person {
         this.description = description;
     }
 
-    public String getLastAccessDate() {
+    public LocalDate getLastAccessDate() {
         return lastAccessDate;
     }
 
-    public void setLastAccessDate(String lastAccessDate) {
+    public void setLastAccessDate(LocalDate lastAccessDate) {
         this.lastAccessDate = lastAccessDate;
     }
 }

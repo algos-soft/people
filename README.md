@@ -1,3 +1,17 @@
+The application creates a H2 datafile in ~/people/
+
+Highlighting complexities you have to cover:
+
+Since lookups by email are required, an index on the email field has been added
+Person.class -> @Table(indexes = @Index(columnList = "email"))
+
+
+
+
+
+
+
+
 # People
 
 This is an example project that can be used as a starting point to create your own Vaadin application with Spring Boot.
