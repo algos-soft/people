@@ -3,7 +3,6 @@ package com.interview.people;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import org.vaadin.artur.helpers.LaunchUtil;
 
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
