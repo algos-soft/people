@@ -4,10 +4,10 @@
 
 The application provides an endpoint to upload .csv files to a database and a simple monitoring UI.
 
-It has been implemented as a SpringBoot application with open source libraries added to simplify some common tasks.
+It has been implemented as a SpringBoot application with some open source libraries added to simplify common tasks.
 
 ==== Libraries used
-The main libraries added to SpringBoot are:
+The main libraries added to *SpringBoot* are:
 
 - *h2 database*, as the implementation of Spring JPA
 
@@ -43,7 +43,7 @@ java -jar target/people-1.0-SNAPSHOT.jar
 
 
 ==== Usage
-The csv files are submitted via http requests to the endpoint http://localhost:8080/people/submit
+Submit the csv files via http POSTs of type form-data to the endpoint http://localhost:8080/people/submit
 
 example with curl:
 ....
@@ -68,8 +68,6 @@ Due to the uniqueness constraint on the email field, a unique index has been add
 Person.class -> @Table(indexes = @Index(columnList = "email"))
 ....
 
-Persistence exceptions are intercepted at Business level and Presentation level in order to manage the error condition appropriately at each level.
-
 ===== Date format problem
 The guidelines didn't specify the format for the date field, so a brute force parser had to be  used in order to support different possible date formats.
 
@@ -89,14 +87,14 @@ The check on the .txt extension has been implemented, but another check was adde
 In case of malformed csv or missing email, the whole import operation is interrupted. Other strategies which could be implemented may include rolling back the transaction or skipping the invalid entries.
 
 ===== Error handling
-In general, all the errors are logged at service level with detailed technical information and error stacktrace.
+Generally, all the errors are logged at service level with detailed technical information and error stacktrace.
 
-At higher level (controller level), the errors are catched, grouped and returned with a level of detail meaningful to the client application.
+At a higher level (controller level), the errors are catched, grouped and returned with a level of detail meaningful to the client application.
 
 The client will then  decide how to notify the user with the appropriate level of detail.
 
 ===== Unit testing
-Bla bla
+Only the classes relevant to this exercise have been tested, namely *PeopleController* and *PersonsService*. Inside these classes, only the public methods have been tested, since the private methods are considered private implementation details and are already tested through the public methods.
 
 ===== Random user generator
 In order to test the endpoint, some .csv files with random people and different sizes were needed, so a small service based on randomuser.me has been implemented to generate them.

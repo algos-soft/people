@@ -1,5 +1,8 @@
-package com.interview.people.data;
+package com.interview.people.controllers;
 
+import com.interview.people.data.Person;
+import com.interview.people.data.PersonRepository;
+import com.interview.people.data.PersonService;
 import com.interview.people.exceptions.CsvParseException;
 import com.interview.people.exceptions.InvalidMimeTypeException;
 import com.interview.people.exceptions.MissingEmailException;
@@ -25,7 +28,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PersonServiceTest {
+public class PeopleControllerTest {
 
     @InjectMocks
     private PersonService unit;
