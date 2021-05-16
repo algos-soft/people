@@ -1,6 +1,6 @@
-package com.interview.people.views;
+package com.motork.people.views;
 
-import com.interview.people.tools.RandomPeopleService;
+import com.motork.people.tools.RandomPeopleService;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;

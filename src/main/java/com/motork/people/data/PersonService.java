@@ -1,9 +1,9 @@
-package com.interview.people.data;
+package com.motork.people.data;
 
-import com.interview.people.exceptions.CsvParseException;
-import com.interview.people.exceptions.InvalidMimeTypeException;
-import com.interview.people.exceptions.MissingEmailException;
-import com.interview.people.tools.OffsetBasedPageRequest;
+import com.motork.people.exceptions.CsvParseException;
+import com.motork.people.exceptions.InvalidMimeTypeException;
+import com.motork.people.exceptions.MissingEmailException;
+import com.motork.people.tools.OffsetBasedPageRequest;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;

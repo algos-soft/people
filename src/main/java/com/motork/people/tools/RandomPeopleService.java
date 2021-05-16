@@ -1,4 +1,4 @@
-package com.interview.people.tools;
+package com.motork.people.tools;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;

@@ -1,4 +1,4 @@
-package com.interview.people.data;
+package com.motork.people.data;
 
 import javax.persistence.*;
 import java.time.LocalDate;

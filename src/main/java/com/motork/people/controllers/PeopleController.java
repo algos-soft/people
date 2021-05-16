@@ -1,8 +1,8 @@
-package com.interview.people.controllers;
+package com.motork.people.controllers;
 
-import com.interview.people.data.PersonService;
-import com.interview.people.exceptions.InternalError;
-import com.interview.people.exceptions.*;
+import com.motork.people.data.PersonService;
+import com.motork.people.exceptions.InternalError;
+import com.motork.people.exceptions.*;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

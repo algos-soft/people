@@ -1,7 +1,7 @@
-package com.interview.people.views;
+package com.motork.people.views;
 
-import com.interview.people.data.Person;
-import com.interview.people.data.PersonService;
+import com.motork.people.data.Person;
+import com.motork.people.data.PersonService;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.UI;

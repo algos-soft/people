@@ -1,15 +1,9 @@
-package com.interview.people.controllers;
+package com.motork.people.controllers;
 
-import com.interview.people.data.Person;
-import com.interview.people.data.PersonRepository;
-import com.interview.people.data.PersonService;
-import com.interview.people.exceptions.CsvParseException;
-import com.interview.people.exceptions.InvalidMimeTypeException;
-import com.interview.people.exceptions.InvalidRequest;
-import com.interview.people.exceptions.MissingEmailException;
+import com.motork.people.data.PersonService;
+import com.motork.people.exceptions.InternalError;
+import com.motork.people.exceptions.*;
 import org.apache.commons.io.IOUtils;
-import org.apache.tika.Tika;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -20,16 +14,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PeopleControllerTest {
@@ -84,7 +72,7 @@ public class PeopleControllerTest {
     public void testUploadFile5() throws IOException, MissingEmailException, InvalidMimeTypeException, CsvParseException {
         MultipartFile mpartFile = new MockMultipartFile( "persons.csv", "persons.csv", "text/plain", buildStreamData());
         doThrow(CsvParseException.class).when(personService).importCsv(any(InputStream.class));
-        assertThrows(com.interview.people.exceptions.InternalError.class, () -> {
+        assertThrows(InternalError.class, () -> {
             unit.uploadFile(mpartFile);
         });
     }
@@ -94,7 +82,7 @@ public class PeopleControllerTest {
     public void testUploadFile6() throws IOException, MissingEmailException, InvalidMimeTypeException, CsvParseException {
         MultipartFile mpartFile = new MockMultipartFile( "persons.csv", "persons.csv", "text/plain", buildStreamData());
         doThrow(IOException.class).when(personService).importCsv(any(InputStream.class));
-        assertThrows(com.interview.people.exceptions.InternalError.class, () -> {
+        assertThrows(InternalError.class, () -> {
             unit.uploadFile(mpartFile);
         });
     }

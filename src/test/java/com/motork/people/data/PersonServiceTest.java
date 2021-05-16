@@ -1,8 +1,8 @@
-package com.interview.people.data;
+package com.motork.people.data;
 
-import com.interview.people.exceptions.CsvParseException;
-import com.interview.people.exceptions.InvalidMimeTypeException;
-import com.interview.people.exceptions.MissingEmailException;
+import com.motork.people.exceptions.CsvParseException;
+import com.motork.people.exceptions.InvalidMimeTypeException;
+import com.motork.people.exceptions.MissingEmailException;
 import org.apache.commons.io.IOUtils;
 import org.apache.tika.Tika;
 import org.junit.Before;

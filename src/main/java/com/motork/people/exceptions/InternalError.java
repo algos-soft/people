@@ -1,4 +1,4 @@
-package com.interview.people.exceptions;
+package com.motork.people.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

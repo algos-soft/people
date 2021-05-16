@@ -1,4 +1,4 @@
-package com.interview.people.exceptions;
+package com.motork.people.exceptions;
 
 public class InvalidMimeTypeException extends Exception{
     public InvalidMimeTypeException(String message) {

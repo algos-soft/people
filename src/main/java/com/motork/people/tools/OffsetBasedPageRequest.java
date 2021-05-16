@@ -1,4 +1,4 @@
-package com.interview.people.tools;
+package com.motork.people.tools;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

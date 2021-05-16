@@ -1,4 +1,4 @@
-package com.interview.people.data;
+package com.motork.people.data;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
