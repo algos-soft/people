@@ -32,6 +32,15 @@ JRE 8.x and Maven must be available
 mvn clean package -Pproduction
 ....
 
+[ERROR] ======================================================================================================
+[ERROR] Your installed 'node' version (6.14.3) is too old. Supported versions are 10.0+
+[ERROR] Please install a new one either:
+[ERROR] - by following the https://nodejs.org/en/download/ guide to install it globally
+[ERROR] - or by running the frontend-maven-plugin goal to install it in this project:
+[ERROR] $ mvn com.github.eirslett:frontend-maven-plugin:1.7.6:install-node-and-npm -DnodeVersion="v12.14.0"
+[ERROR] You can disable the version check using -Dvaadin.ignoreVersionChecks=true
+[ERROR] ======================================================================================================
+
 ==== Running the application:
 cd to the project directory and run:
 
@@ -49,6 +58,8 @@ example with curl:
 ....
 curl --location --request POST http://localhost:8080/people/submit --form file=@<myfile.csv>
 ....
+
+NOTE: You can find some example files in the *testfiles* directory
 
 ==== Notes
 
