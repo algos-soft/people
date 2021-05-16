@@ -1,11 +1,24 @@
+People application
+
 In order to build a quick and simple UI, some Vaadin libraries have been used.
 However, the app is a pure SpringBoot application.
+
+Installation
+cd to the project directory and run mvn install
+
+Running the application
+java -jar <basedir>/target/....jar
+connect to the UI at http://localhost:8080
+
+Usage
+You can submit csv data to the endpoint in 2 ways: uploading a file with the button on the UI or sending an thp request to the endpoint /xxxx.
 
 Persistence layer
 Persistence is based on the H2 database and Spring Data JPA (the persistence layer can be changed just providing different implementations of the repositories). The application creates a H2 datafile in ~/people/
 
 CSV implementation
-The CSV format is managed with Apache Commons CSV. The CSV supported format is defined in RFC 4180 (commas as separators).
+CSV is an old format and comes in various flavors. Since the flavor was not specified, the standard format defined in RFC 4180 has been implemented (using commas as separators).
+The parser used is Apache Commons CSV.
 
 Email field uniqueness
 Due to the uniqueness constraint on the email field, a unique index has been added at persistence level.
