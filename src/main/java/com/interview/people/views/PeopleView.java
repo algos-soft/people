@@ -4,22 +4,21 @@ import com.interview.people.data.Person;
 import com.interview.people.data.PersonService;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.upload.Upload;
-import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
+import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.data.provider.CallbackDataProvider;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.server.Command;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -27,54 +26,43 @@ import javax.annotation.PostConstruct;
 @Route(value = "people")
 @PageTitle("People")
 @RouteAlias("")
+@Push
 public class PeopleView extends Div {
 
 
     @Autowired
     private PersonService personService;
 
+    private Grid<Person> grid;
+    private Label rowCount;
 
     @PostConstruct
     private void init(){
 
-        Grid grid = createGrid();
+        grid = createGrid();
 
-        Label rowCount=new Label();
-
-        MemoryBuffer buffer = new MemoryBuffer();
-        Upload upload = new Upload(buffer);
-        upload.setDropAllowed(false);
-
-        upload.addSucceededListener(event -> {
-            try {
-
-                personService.importCsv(buffer.getInputStream());
-                grid.getDataProvider().refreshAll();
-                rowCount.setText(personService.count()+" rows");
-
-            } catch (Exception e) {
-                // keep the message generic - avoid giving too much technical info to the user
-                // the detailed error is logged by the service
-                new Notification("The file could not be processed", 3000).open();
-            }
-        });
+        rowCount=new Label();
 
         Button bDelete = new Button("Delete all");
         bDelete.addClickListener((ComponentEventListener<ClickEvent<Button>>) event -> {
             personService.deleteAll();
-            grid.getDataProvider().refreshAll();
-            rowCount.setText(personService.count()+" rows");
+            refreshGrid();
         });
 
-        rowCount.setText(personService.count()+" rows");
+        refreshGrid();
 
+        // listener to the import completed event in order to refresh the grid content when it happens
+        UI ui = UI.getCurrent();
+        personService.addImportListener(() -> ui.access((Command) () -> refreshGrid()));
+
+        // layout the components on page
         VerticalLayout layout = new VerticalLayout();
         layout.setHeightFull();
         layout.setWidthFull();
         grid.setHeightFull();
         HorizontalLayout bLayout = new HorizontalLayout();
         bLayout.setAlignItems(FlexComponent.Alignment.BASELINE);
-        bLayout.add(upload, bDelete, rowCount);
+        bLayout.add(bDelete, rowCount);
         layout.add(grid, bLayout);
         setHeightFull();
         setWidthFull();
@@ -83,7 +71,7 @@ public class PeopleView extends Div {
     }
 
 
-    private Grid createGrid(){
+    private Grid<Person> createGrid(){
 
         CallbackDataProvider<Person, Void> provider;
         provider = DataProvider.fromCallbacks(fetchCallback -> {
@@ -109,10 +97,10 @@ public class PeopleView extends Div {
 
     }
 
-//    private void refreshGrid(){
-//        grid.getDataProvider().refreshAll();
-//
-//    }
+    private void refreshGrid(){
+        grid.getDataProvider().refreshAll();
+        rowCount.setText(personService.count()+" rows");
+    }
 
 
 }

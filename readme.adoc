@@ -1,49 +1,109 @@
-People application
+:doctype: article
+:doctitle: People application
+:!toc:
 
-In order to build a quick and simple UI, some Vaadin libraries have been used.
-However, the app is a pure SpringBoot application.
+The application provides an endpoint to upload .csv files to a database and a simple monitoring UI.
 
-Installation
-cd to the project directory and run mvn install
+It has been implemented as a SpringBoot application with open source libraries added to simplify some common tasks.
 
-Running the application
-java -jar <basedir>/target/....jar
-connect to the UI at http://localhost:8080
+==== Libraries used
+The main libraries added to SpringBoot are:
 
-Usage
-You can submit csv data to the endpoint in 2 ways: uploading a file with the button on the UI or sending an thp request to the endpoint /xxxx.
+- *h2 database*, as the implementation of Spring JPA
 
-Persistence layer
-Persistence is based on the H2 database and Spring Data JPA (the persistence layer can be changed just providing different implementations of the repositories). The application creates a H2 datafile in ~/people/
+- *vaadin*, in order to build a quick and simple UI
 
-CSV implementation
+- *apache commons-csv*, for parsing the csv format
+
+- *apache tika*, for mime type detection
+
+- *okhttp* and *moshi*, for the sample data generator
+
+==== Requirements:
+
+JRE 8.x and Maven must be available
+
+==== Installation:
+- unzip the provided package.
+
+- cd to the project directory and run:
+
+....
+mvn clean package -Pproduction
+....
+
+==== Running the application:
+cd to the project directory and run:
+
+....
+java -jar target/people-1.0-SNAPSHOT.jar
+....
+
+(when the server is ready you can connect to the UI at http://localhost:8080)
+
+
+==== Usage
+The csv files are submitted via http requests to the endpoint http://localhost:8080/people/submit
+
+example with curl:
+....
+curl --location --request POST http://localhost:8080/people/submit --form file=@<myfile.csv>
+....
+
+==== Notes
+
+===== Persistence layer
+The persistence implementation is based on the H2 database and Spring Data JPA (the persistence layer can easily be changed by providing different implementations of the Repository classes).
+
+The application creates a H2 datafile in ~/people/
+
+===== CSV implementation
 CSV is an old format and comes in various flavors. Since the flavor was not specified, the standard format defined in RFC 4180 has been implemented (using commas as separators).
 The parser used is Apache Commons CSV.
 
-Email field uniqueness
+===== Email field uniqueness
 Due to the uniqueness constraint on the email field, a unique index has been added at persistence level.
+
+....
 Person.class -> @Table(indexes = @Index(columnList = "email"))
+....
+
 Persistence exceptions are intercepted at Business level and Presentation level in order to manage the error condition appropriately at each level.
 
-Date format problem
-The guidelines didn't specify the format for the date field, so a brute force parser has been used in order to support different possible formats.
+===== Date format problem
+The guidelines didn't specify the format for the date field, so a brute force parser had to be  used in order to support different possible date formats.
+
 A more efficient solution could be used if some specs on the date format were provided.
 
-File type problem
-"Given a new file to import, when I upload a *.txt file, then I should receive an error" - this requirement was a bit misleading.
-The data submitted to an endpoint does not necessarily have a filename: in case of a web application data is submitted through http streams.
-So it is impossible to tell if it came from a *.txt or *.csv or any other type of file stored in the client, unless the client does not declare it explicitly in the Content-Type request headers.
-The best that i could do is to check the MIME type of the input stream through Apache Tika - so you can at least detect if it is "plain/text" and reject other types.
-But you can tell if the data logically complies with the expected .csv structure only when you actually parse the content.
+===== .txt file type problem
+[quote]
+"Given a new file to import, when I upload a *.txt file, then I should receive an error"
 
-Handling of invalid data
+This requirement was a bit misleading.
+
+Although is possible to detect the original filename, a .txt extension doesn't mean that the file does not contain a valid csv structure, and in the other hand a .csv extension does not guarantee to contain a valid csv content.
+
+The check on the .txt extension has been implemented, but another check was added, which detects the MIME type of the content through Apache Tika, in order to refuse any non "text/plain" content.
+
+===== Handling of invalid data
 In case of malformed csv or missing email, the whole import operation is interrupted. Other strategies which could be implemented may include rolling back the transaction or skipping the invalid entries.
 
-Generator
-In order to test the endpoint, I needed some .csv files with random people and different sizes, so a small service based on randomuser.me has been implemented to generate them.
-You can access the generator service at the url http://localhost:8080/generator
+===== Error handling
+In general, all the errors are logged at service level with detailed technical information and error stacktrace.
 
-Test data
-In the testfiles directory there are some data files for testing. The 10.000 rows datafile does not produce 10.000 rows in the db because some email addresses are duplicated.
+At higher level (controller level), the errors are catched, grouped and returned with a level of detail meaningful to the client application.
 
+The client will then  decide how to notify the user with the appropriate level of detail.
 
+===== Unit testing
+Bla bla
+
+===== Random user generator
+In order to test the endpoint, some .csv files with random people and different sizes were needed, so a small service based on randomuser.me has been implemented to generate them.
+
+You can access the generator service at http://localhost:8080/generator if you are interested.
+
+===== Test data
+In the *testfiles* directory you can find different data files for testing.
+
+NOTE: Note: the 10.000 rows datafile does not produce 10.000 rows in the db because some email addresses are duplicated.
