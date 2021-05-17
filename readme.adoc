@@ -24,7 +24,7 @@ The main libraries added to *SpringBoot* are:
 JRE 8.x and Maven must be available
 
 ==== Installation:
-- unzip the provided package.
+- unzip the provided package
 
 - cd to the project directory and run:
 
@@ -32,14 +32,8 @@ JRE 8.x and Maven must be available
 mvn clean package -Pproduction
 ....
 
-[ERROR] ======================================================================================================
-[ERROR] Your installed 'node' version (6.14.3) is too old. Supported versions are 10.0+
-[ERROR] Please install a new one either:
-[ERROR] - by following the https://nodejs.org/en/download/ guide to install it globally
-[ERROR] - or by running the frontend-maven-plugin goal to install it in this project:
-[ERROR] $ mvn com.github.eirslett:frontend-maven-plugin:1.7.6:install-node-and-npm -DnodeVersion="v12.14.0"
-[ERROR] You can disable the version check using -Dvaadin.ignoreVersionChecks=true
-[ERROR] ======================================================================================================
+NOTE: In case you get an error complying about Node version (it may happen on some old Unix systems) run the command: *mvn com.github.eirslett:frontend-maven-plugin:1.7.6:install-node-and-npm -DnodeVersion="v12.14.0"* and retry the operation.
+
 
 ==== Running the application:
 cd to the project directory and run:
@@ -64,12 +58,12 @@ NOTE: You can find some example files in the *testfiles* directory
 ==== Notes
 
 ===== Persistence layer
-The persistence implementation is based on the H2 database and Spring Data JPA (the persistence layer can easily be changed by providing different implementations of the Repository classes).
+The persistence implementation is based on the H2 database and Spring Data JPA (the persistence layer can easily be changed by providing different implementations of the Repository interfaces).
 
-The application creates a H2 datafile in ~/people/
+The database is stored in memory. You can store it on a file enabling the appropriate property in config/application.properties.
 
 ===== CSV implementation
-CSV is an old format and comes in various flavors. Since the flavor was not specified, the standard format defined in RFC 4180 has been implemented (using commas as separators).
+CSV is an old format and comes in various flavors. Since the actual flavor was not specified, the standard format defined in RFC 4180 has been implemented (using commas as separators).
 The parser used is Apache Commons CSV.
 
 ===== Email field uniqueness
@@ -80,7 +74,7 @@ Person.class -> @Table(indexes = @Index(columnList = "email"))
 ....
 
 ===== Date format problem
-The guidelines didn't specify the format for the date field, so a brute force parser had to be  used in order to support different possible date formats.
+The guidelines didn't specify the format for the date field, so a brute force parser had to be used in order to support different possible date formats.
 
 A more efficient solution could be used if some specs on the date format were provided.
 
@@ -90,9 +84,9 @@ A more efficient solution could be used if some specs on the date format were pr
 
 This requirement was a bit misleading.
 
-Although is possible to detect the original filename, a .txt extension doesn't mean that the file does not contain a valid csv structure, and in the other hand a .csv extension does not guarantee to contain a valid csv content.
+Although it is possible to detect the original filename, a .txt extension doesn't mean that the file does not contain a valid csv structure, and in the other hand a .csv extension does not guarantee to contain a valid csv content.
 
-The check on the .txt extension has been implemented, but another check was added, which detects the MIME type of the content through Apache Tika, in order to refuse any non "text/plain" content.
+The check on the .txt extension has been implemented, but another check was added, which detects the MIME type of the content through Apache Tika, in order to reject any non "text/plain" content.
 
 ===== Handling of invalid data
 In case of malformed csv or missing email, the whole import operation is interrupted. Other strategies which could be implemented may include rolling back the transaction or skipping the invalid entries.
@@ -102,7 +96,7 @@ Generally, all the errors are logged at service level with detailed technical in
 
 At a higher level (controller level), the errors are catched, grouped and returned with a level of detail meaningful to the client application.
 
-The client will then  decide how to notify the user with the appropriate level of detail.
+The client will then decide if and how to notify the user in case of error.
 
 ===== Unit testing
 Only the classes relevant to this exercise have been tested, namely *PeopleController* and *PersonsService*. Inside these classes, only the public methods have been tested, since the private methods are considered private implementation details and are already tested through the public methods.
@@ -113,6 +107,6 @@ In order to test the endpoint, some .csv files with random people and different 
 You can access the generator service at http://localhost:8080/generator if you are interested.
 
 ===== Test data
-In the *testfiles* directory you can find different data files for testing.
+In the *testfiles* directory you can find different data files already prepared for testing.
 
-NOTE: Note: the 10.000 rows datafile does not produce 10.000 rows in the db because some email addresses are duplicated.
+NOTE: Note: the sample 10.000 rows datafile does not produce 10.000 rows in the database because some email addresses are duplicated.

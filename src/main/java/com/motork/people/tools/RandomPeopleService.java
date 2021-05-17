@@ -43,7 +43,7 @@ public class RandomPeopleService {
     }
 
 
-    public void generatePeople(int number) throws Exception {
+    public String generatePeople(int number) throws Exception {
         HttpUrl.Builder urlBuilder = HttpUrl.parse("https://randomuser.me/api/").newBuilder();
         String url = urlBuilder.build().toString();
 
@@ -54,7 +54,8 @@ public class RandomPeopleService {
         String s5;
         String s6;
 
-        Path path = Paths.get(SystemUtils.getUserHome().toString(), "people", number + "_persons.csv");
+        String filename=number + "_persons.csv";
+        Path path = Paths.get(SystemUtils.getUserHome().toString(), filename);
         FileWriter out = new FileWriter(path.toFile());
         CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT);
 
@@ -83,6 +84,8 @@ public class RandomPeopleService {
         }
 
         out.close();
+
+        return filename;
 
     }
 

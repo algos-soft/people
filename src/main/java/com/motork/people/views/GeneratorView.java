@@ -34,8 +34,8 @@ public class GeneratorView extends Div {
             try {
                 int number = numberField.getValue();
                 if(number>0){
-                    randomPeopleService.generatePeople(number);
-                    new Notification("File generated successfully in ~/people/ directory").open();
+                    String filename = randomPeopleService.generatePeople(number);
+                    new Notification("File "+filename+" saved in system's home directory").open();
                 }else{
                     new Notification("Input a valid number", 3000).open();
                 }
