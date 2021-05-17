@@ -573,7 +573,19 @@ In case you get an error complying about Node version (it may happen on some old
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-You can find some example files in the <strong>testfiles</strong> directory
+You can find some example files in the <strong>testfiles/</strong> directory
+</td>
+</tr>
+</table>
+</div>
+<div id="__asciidoctor-preview-23__" class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+The maximum file size allowed is 2MB, configurable in /config/application.properties
 </td>
 </tr>
 </table>
@@ -583,26 +595,26 @@ You can find some example files in the <strong>testfiles</strong> directory
 <h4 id="_notes">Notes</h4>
 <div class="sect4">
 <h5 id="_persistence_layer">Persistence layer</h5>
-<div id="__asciidoctor-preview-23__" class="paragraph">
+<div id="__asciidoctor-preview-24__" class="paragraph">
 <p>The persistence implementation is based on the H2 database and Spring Data JPA (the persistence layer can easily be changed by providing different implementations of the Repository interfaces).</p>
 </div>
-<div id="__asciidoctor-preview-24__" class="paragraph">
+<div id="__asciidoctor-preview-25__" class="paragraph">
 <p>The database is stored in memory. You can store it on a file enabling the appropriate property in config/application.properties.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_csv_implementation">CSV implementation</h5>
-<div id="__asciidoctor-preview-25__" class="paragraph">
+<div id="__asciidoctor-preview-26__" class="paragraph">
 <p>CSV is an old format and comes in various flavors. Since the actual flavor was not specified, the standard format defined in RFC 4180 has been implemented (using commas as separators).
 The parser used is Apache Commons CSV.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_email_field_uniqueness">Email field uniqueness</h5>
-<div id="__asciidoctor-preview-26__" class="paragraph">
+<div id="__asciidoctor-preview-27__" class="paragraph">
 <p>Due to the uniqueness constraint on the email field, a unique index has been added at persistence level.</p>
 </div>
-<div id="__asciidoctor-preview-27__" class="literalblock">
+<div id="__asciidoctor-preview-28__" class="literalblock">
 <div class="content">
 <pre>Person.class -&gt; @Table(indexes = @Index(columnList = "email"))</pre>
 </div>
@@ -610,69 +622,69 @@ The parser used is Apache Commons CSV.</p>
 </div>
 <div class="sect4">
 <h5 id="_date_format_problem">Date format problem</h5>
-<div id="__asciidoctor-preview-28__" class="paragraph">
+<div id="__asciidoctor-preview-29__" class="paragraph">
 <p>The guidelines didn&#8217;t specify the format for the date field, so a brute force parser had to be used in order to support different possible date formats.</p>
 </div>
-<div id="__asciidoctor-preview-29__" class="paragraph">
+<div id="__asciidoctor-preview-30__" class="paragraph">
 <p>A more efficient solution could be used if some specs on the date format were provided.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_txt_file_type_problem">.txt file type problem</h5>
-<div id="__asciidoctor-preview-30__" class="quoteblock">
+<div id="__asciidoctor-preview-31__" class="quoteblock">
 <blockquote>
 "Given a new file to import, when I upload a *.txt file, then I should receive an error"
 </blockquote>
 </div>
-<div id="__asciidoctor-preview-31__" class="paragraph">
+<div id="__asciidoctor-preview-32__" class="paragraph">
 <p>This requirement was a bit misleading.</p>
 </div>
-<div id="__asciidoctor-preview-32__" class="paragraph">
+<div id="__asciidoctor-preview-33__" class="paragraph">
 <p>Although it is possible to detect the original filename, a .txt extension doesn&#8217;t mean that the file does not contain a valid csv structure, and in the other hand a .csv extension does not guarantee to contain a valid csv content.</p>
 </div>
-<div id="__asciidoctor-preview-33__" class="paragraph">
+<div id="__asciidoctor-preview-34__" class="paragraph">
 <p>The check on the .txt extension has been implemented, but another check was added, which detects the MIME type of the content through Apache Tika, in order to reject any non "text/plain" content.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_handling_of_invalid_data">Handling of invalid data</h5>
-<div id="__asciidoctor-preview-34__" class="paragraph">
+<div id="__asciidoctor-preview-35__" class="paragraph">
 <p>In case of malformed csv or missing email, the whole import operation is interrupted. Other strategies which could be implemented may include rolling back the transaction or skipping the invalid entries.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_error_handling">Error handling</h5>
-<div id="__asciidoctor-preview-35__" class="paragraph">
+<div id="__asciidoctor-preview-36__" class="paragraph">
 <p>Generally, all the errors are logged at service level with detailed technical information and error stacktrace.</p>
 </div>
-<div id="__asciidoctor-preview-36__" class="paragraph">
+<div id="__asciidoctor-preview-37__" class="paragraph">
 <p>At a higher level (controller level), the errors are catched, grouped and returned with a level of detail meaningful to the client application.</p>
 </div>
-<div id="__asciidoctor-preview-37__" class="paragraph">
+<div id="__asciidoctor-preview-38__" class="paragraph">
 <p>The client will then decide if and how to notify the user in case of error.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_unit_testing">Unit testing</h5>
-<div id="__asciidoctor-preview-38__" class="paragraph">
+<div id="__asciidoctor-preview-39__" class="paragraph">
 <p>Only the classes relevant to this exercise have been tested, namely <strong>PeopleController</strong> and <strong>PersonsService</strong>. Inside these classes, only the public methods have been tested, since the private methods are considered private implementation details and are already tested through the public methods.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_random_user_generator">Random user generator</h5>
-<div id="__asciidoctor-preview-39__" class="paragraph">
+<div id="__asciidoctor-preview-40__" class="paragraph">
 <p>In order to test the endpoint, some .csv files with random people and different sizes were needed, so a small service based on randomuser.me has been implemented to generate them.</p>
 </div>
-<div id="__asciidoctor-preview-40__" class="paragraph">
+<div id="__asciidoctor-preview-41__" class="paragraph">
 <p>You can access the generator service at <a href="http://localhost:8080/generator" class="bare">http://localhost:8080/generator</a> if you are interested.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_test_data">Test data</h5>
-<div id="__asciidoctor-preview-41__" class="paragraph">
+<div id="__asciidoctor-preview-42__" class="paragraph">
 <p>In the <strong>testfiles</strong> directory you can find different data files already prepared for testing.</p>
 </div>
-<div id="__asciidoctor-preview-42__" class="admonitionblock note">
+<div id="__asciidoctor-preview-43__" class="admonitionblock note">
 <table>
 <tr>
 <td class="icon">

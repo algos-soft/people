@@ -53,7 +53,9 @@ example with curl:
 curl --location --request POST http://localhost:8080/people/submit --form file=@<myfile.csv>
 ....
 
-NOTE: You can find some example files in the *testfiles* directory
+NOTE: You can find some example files in the *testfiles/* directory
+
+WARNING: The maximum file size allowed is 2MB, configurable in /config/application.properties
 
 ==== Notes
 
