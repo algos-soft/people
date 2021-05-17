@@ -94,5 +94,11 @@ public class PeopleController {
 
     }
 
+    public float getMaxUploadSizeMB() {
+        return maxUploadSizeMB;
+    }
 
+    public void setMaxUploadSizeMB(float maxUploadSizeMB) {
+        this.maxUploadSizeMB = maxUploadSizeMB;
+    }
 }
